@@ -6,11 +6,7 @@ services:
         container_name: databse-mysql
         restart: always 
         environment: 
-          MYSQL_DATABASE: 'db'
-          MYSQL_USER: 'user'
-          MYSQL_PASSWORD: 'password'
-          MYSQL_ROOT_PASSWORD: 'password'
+        - MYSQL_ROOT_PASSWORD=123456
         ports:
-        - 3307:3306
-        - 33061:33060
+        - 3306:3306
         
