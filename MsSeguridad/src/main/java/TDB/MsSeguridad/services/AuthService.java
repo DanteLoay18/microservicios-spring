@@ -27,4 +27,7 @@ public class AuthService {
         return authRepository.save(usuario);
     }
 
+    public void deleteUsuario(UsuarioModel usuario){
+        authRepository.delete(usuario);
+    }
 }

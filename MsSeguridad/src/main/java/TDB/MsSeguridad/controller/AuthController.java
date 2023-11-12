@@ -8,6 +8,7 @@ import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,14 +22,15 @@ import TDB.MsSeguridad.services.AuthService;
 import TDB.MsSeguridad.model.UsuarioModel;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth")//ruta
 public class AuthController {
 
     @Autowired
     AuthService authService;
 
-    @GetMapping
-    public List<UsuarioModel> getAll() {
+    @GetMapping("/findAll")
+
+    public List<UsuarioModel> getAll() {//obtiene todos los usuarios
         return authService.getAll();
     }
 
@@ -51,4 +53,16 @@ public class AuthController {
         UsuarioModel nuevoProducto = authService.createUsuario(usuario);
         return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> eliminarUsuario(@PathVariable Integer id){
+        Optional<UsuarioModel> usuario = authService.findById(id);
+        if (usuario.isPresent()) {
+            authService.deleteUsuario(usuario.get());
+            return ResponseEntity.ok("Usuario eliminado correctamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no existente");
+        }
+    }
+    
 }
