@@ -20,17 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 import TDB.MsSeguridad.services.AuthService;
 
 import TDB.MsSeguridad.model.UsuarioModel;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
-@RequestMapping("/api/auth")//ruta
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
     AuthService authService;
 
-    @GetMapping("/findAll")
-
-    public List<UsuarioModel> getAll() {//obtiene todos los usuarios
+    @GetMapping
+    public List<UsuarioModel> getAll() {
         return authService.getAll();
     }
 
@@ -44,7 +45,6 @@ public class AuthController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
     }
 
     @PostMapping
@@ -53,8 +53,13 @@ public class AuthController {
         UsuarioModel nuevoProducto = authService.createUsuario(usuario);
         return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
     }
-
-    @DeleteMapping("/{id}")
+    
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity <UsuarioModel> actualizarUsuario(@PathVariable Integer id, @RequestBody UsuarioModel entity) {
+        UsuarioModel nuevoProducto = authService.actualizarUsuario(id,entity);
+        return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
+    }
+     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarUsuario(@PathVariable Integer id){
         Optional<UsuarioModel> usuario = authService.findById(id);
         if (usuario.isPresent()) {
@@ -64,5 +69,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no existente");
         }
     }
-    
 }

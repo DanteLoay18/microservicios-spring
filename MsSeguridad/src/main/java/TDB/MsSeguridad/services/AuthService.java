@@ -30,4 +30,15 @@ public class AuthService {
     public void deleteUsuario(UsuarioModel usuario){
         authRepository.delete(usuario);
     }
+
+    public UsuarioModel actualizarUsuario(Integer id, UsuarioModel nuevoUsuario) {
+        UsuarioModel usuarioExistente = authRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuarioExistente.setUsername(nuevoUsuario.getUsername());
+        usuarioExistente.setPassword(nuevoUsuario.getPassword());
+
+        return authRepository.save(usuarioExistente);
+    }
+    
 }
