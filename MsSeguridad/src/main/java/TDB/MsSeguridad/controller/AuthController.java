@@ -55,11 +55,12 @@ public class AuthController {
     }
     
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity <UsuarioModel> actualizarUsuario(@PathVariable Integer id, @RequestBody UsuarioModel entity) {
+    public ResponseEntity <UsuarioModel> actualizarUsuario(@PathVariable Integer id, @RequestBody UsuarioModel entity) {//mala practica
         UsuarioModel nuevoProducto = authService.actualizarUsuario(id,entity);
         return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
     }
-     @DeleteMapping("/{id}")
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarUsuario(@PathVariable Integer id){
         Optional<UsuarioModel> usuario = authService.findById(id);
         if (usuario.isPresent()) {
